@@ -32,6 +32,7 @@
   </div>
 </template>
 
+
 <script>
 export default {
   name: 'HelloWorld',
@@ -39,34 +40,50 @@ export default {
     msg: String
   }
 }
+/*
+  function getAccountTransactions(accAddress, startBlockNumber, endBlockNumber) {
+    //You can do a NULL check for the start/end blockNumber
 
-function getAccountTransactions(accAddress, startBlockNumber, endBlockNumber) {
-  // You can do a NULL check for the start/end blockNumber
+    console.log("Searching for transactions to/from account \"" + accAddress + "\" within blocks "  + startBlockNumber + " and " + endBlockNumber);
+    var Web3 = require('web3');
+    const web3 = new Web3("https://cloudflare-eth.com");
 
-  console.log("Searching for transactions to/from account \"" + accAddress + "\" within blocks "  + startBlockNumber + " and " + endBlockNumber);
+    for (var i = startBlockNumber; i <= endBlockNumber; i++) {
+      var block = web3.eth.getBlock(i, true);
 
-  for (var i = startBlockNumber; i <= endBlockNumber; i++) {
-    var block = eth.getBlock(i, true);
-
-    if (block != null && block.transactions != null) {
-      block.transactions.forEach( function(e) {
-        if (accAddress == "*" || accAddress == e.from || accAddress == e.to) {
-          console.log("  tx hash          : " + e.hash + "\n"
-            + "   nonce           : " + e.nonce + "\n"
-            + "   blockHash       : " + e.blockHash + "\n"
-            + "   blockNumber     : " + e.blockNumber + "\n"
-            + "   transactionIndex: " + e.transactionIndex + "\n"
-            + "   from            : " + e.from + "\n" 
-            + "   to              : " + e.to + "\n"
-            + "   value           : " + e.value + "\n"
-            + "   gasPrice        : " + e.gasPrice + "\n"
-            + "   gas             : " + e.gas + "\n"
-            + "   input           : " + e.input);
-        }
-      })
+      if (block != null && block.transactions != null) {
+        block.transactions.forEach( function(e) {
+          if (accAddress == "*" || accAddress == e.from || accAddress == e.to) {
+            console.log("  tx hash          : " + e.hash + "\n"
+              + "   nonce           : " + e.nonce + "\n"
+              + "   blockHash       : " + e.blockHash + "\n"
+              + "   blockNumber     : " + e.blockNumber + "\n"
+              + "   transactionIndex: " + e.transactionIndex + "\n"
+              + "   from            : " + e.from + "\n" 
+              + "   to              : " + e.to + "\n"
+              + "   value           : " + e.value + "\n"
+              + "   gasPrice        : " + e.gasPrice + "\n"
+              + "   gas             : " + e.gas + "\n"
+              + "   input           : " + e.input);
+          }
+        })
+      }
     }
   }
-}
+getAccountTransactions('0xa467AB9447AfA5Db0c70325348D810d2058DDe18', 13800970, 13800978);
+*/
+var Web3 = require("web3")
+const web3 = new Web3("https://cloudflare-eth.com")
+
+web3.eth.getBlockNumber(function (error, result) {
+  console.log(result)
+})
+
+ web3.eth.getBlock(13467512)
+ .then(console.log);
+
+web3.eth.getBlockTransactionCount(13467512)
+.then(console.log);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
