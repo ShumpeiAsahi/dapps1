@@ -1,5 +1,17 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <ViewTxs/>
   </div>
 </template>
+
+<script>
+// @ is an alias to /src
+import ViewTxs from '@/components/viewTxHistories.vue'
+
+export default {
+  name: 'App',
+  components: {
+    ViewTxs
+  }
+}
+</script>
