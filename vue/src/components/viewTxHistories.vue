@@ -21,8 +21,9 @@ export default {
   methods: {
     getTransactions: function() {
       if(this.search_address !== "") {
-        web3.eth.getTransaction(this.search_address)
-        .then(console.log);
+        console.log('開始');
+        GetTransactionsByAccount(this.search_address);
+        console.log('終了');
       }
     }
   }
@@ -31,6 +32,40 @@ export default {
 
 var Web3 = require("web3")
 const web3 = new Web3("https://cloudflare-eth.com")
+
+async function GetTransactionsByAccount(address){
+    var myAddr = address;
+    let latestBlock = await web3.eth.getBlock('latest');
+    console.log(latestBlock);
+    var currentBlock = latestBlock.number;
+    console.log(currentBlock);
+    var n = await web3.eth.getTransactionCount(myAddr, currentBlock);
+    console.log(n);
+    var bal = await web3.eth.getBalance(myAddr, currentBlock);
+    console.log(bal);
+    /*
+    for (var i=currentBlock; i >= 0 && (n > 0 || bal > 0); --i) {
+        try {
+            var block = web3.eth.getBlock(i, true);
+            if (block && block.transactions) {
+                block.transactions.forEach(function(e) {
+                    if (myAddr == e.from) {
+                        if (e.from != e.to)
+                            bal = bal.plus(e.value);
+                        console.log(i, e.from, e.to, e.value.toString(10));
+                        --n;
+                    }
+                    if (myAddr == e.to) {
+                        if (e.from != e.to)
+                            bal = bal.minus(e.value);
+                        console.log(i, e.from, e.to, e.value.toString(10));
+                    }
+                });
+            }
+        } catch (e) { console.error("Error in block " + i, e); }
+    }
+    */
+}
 /*
 web3.eth.getBlockNumber(function (error, result) {
   console.log(result)
