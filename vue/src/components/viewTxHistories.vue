@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Type Block number" v-model="search_term" aria-label="Search" />
+      <input class="form-control mr-sm-2" type="text" placeholder="Type Block number" v-model="search_address" aria-label="Search" />
       <button class="btn btn-outline-success my-2 my-sm-0" v-on:click.prevent="getTransactions()">
         Search
       </button>
@@ -15,13 +15,13 @@ export default {
   name: 'ViewTxs',
   data(){
     return {
-      search_term: ""
+      search_address: ""
     }
   },
   methods: {
     getTransactions: function() {
-      if(this.search_term !== "") {
-        web3.eth.getBlock(this.search_term)
+      if(this.search_address !== "") {
+        web3.eth.getTransaction(this.search_address)
         .then(console.log);
       }
     }
