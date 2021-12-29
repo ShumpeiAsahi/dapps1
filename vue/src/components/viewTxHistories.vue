@@ -42,7 +42,7 @@ async function GetTransactionsByAccount(address){
     var n = await web3.eth.getTransactionCount(myAddr, currentBlock);
     console.log(n);
     var bal = await web3.eth.getBalance(myAddr, currentBlock);
-    console.log(bal);
+
     /*
     for (var i=currentBlock; i >= 0 && (n > 0 || bal > 0); --i) {
         try {
