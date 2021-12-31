@@ -6,8 +6,27 @@
         Search
       </button>
     </div>
-    <div id="serchResukt" v-test="serchResult">
-
+    <div id="serchResukt">
+        <p>最新のトランザクションを表示します。</p>
+        <p>{{message}}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Transaction Hash</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Gas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{tXs.hash}}</td>
+                    <td>{{tXs.from}}</td>
+                    <td>{{tXs.to}}</td>
+                    <td>{{tXs.gasPrice}} Ether</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
   </div>
 </template>
@@ -19,13 +38,25 @@ export default {
   data(){
     return {
       search_address: "",
-      serchResult:""
+      tXs:[],
+      message:""
     }
   },
   methods: {
-    getTransactions: function() {
+    getTransactions: async function() {
       if(this.search_address !== "") {
-        GetBlockinfo(this.search_address);
+        //var result = await GetBlockinfo(this.search_address);
+        var blockInfo = await web3.eth.getBlock(this.search_address);
+        var txCountByBlockNum = await web3.eth.getBlockTransactionCount(this.search_address);
+         if(txCountByBlockNum != 0){
+          this.tXs = await web3.eth.getTransaction(blockInfo.transactions[txCountByBlockNum-1]);
+          this.tXs.gasPrice = web3.utils.fromWei(this.tXs.gasPrice, 'ether');
+          console.log(this.tXs);
+          this.message = ''
+        }else{
+          this.tXs =[];
+          this.message = 'このブロックにトランザクションはありません。'
+        }
       }
     }
   }
@@ -34,21 +65,22 @@ export default {
 
 var Web3 = require("web3")
 const web3 = new Web3("https://cloudflare-eth.com")
-
+/*
 //ブロックの最新トランザクションを表示する関数
 async function GetBlockinfo(blockNumber){
   var blockInfo = await web3.eth.getBlock(blockNumber);
   var txCountByBlockNum = await web3.eth.getBlockTransactionCount(blockNumber);
   if(txCountByBlockNum != 0){
-    var txInfo =web3.eth.getTransaction(blockInfo.transactions[txCountByBlockNum-1]);
-    console.log(txInfo);
+    var txInfo = await web3.eth.getTransaction(blockInfo.transactions[txCountByBlockNum-1]);
+    console.log(txInfo.from);
+    return txInfo
   }else{
     console.log('このブロックにトランザクションはありません。');
   }
   
   //web3.eth.getTransaction(blockInfo.transactions[0]).then(console.log);
 }
-/*
+
 0xb18b0ab693ac3942c70d5d6d8f0ed85649eb5ce23f66138e7df32b601857d01f
 0xb18b0ab693ac3942c70d5d6d8f0ed85649eb5ce23f66138e7df32b601857d01f
 
@@ -125,5 +157,8 @@ li {
 }
 a {
   color: #42b983;
+}
+table, th, td {
+  border: 1px solid black;
 }
 </style>
